@@ -1,0 +1,1 @@
+ D:\\Flutter_projects\\oceanakabab\\.dart_tool\\flutter_build\\11e55fdd3a3aeebf503d5a6a295e6739\\native_assets.yaml: 
