@@ -1,90 +1,89 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:oceanakabab/controllers/address-controller.dart';
 
 import '../common/app_colors.dart';
 import 'add_new_address_view.dart';
 
 class AddressScreen extends StatelessWidget {
-  const AddressScreen({Key? key}) : super(key: key);
+  AddressScreen({Key? key}) : super(key: key);
+
+  final controller = Get.put(AddressController());
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Back button and title
-              Row(
+    return GetBuilder<AddressController>(
+      builder: (controller) {
+        return controller.listCheck==false?Scaffold(
+          backgroundColor: Colors.white,
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey[100],
-                      shape: BoxShape.circle,
+                  // Back button and title
+                  Row(children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[100],
+                        shape: BoxShape.circle,
+                      ),
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_back, color: Colors.black),
+                        onPressed: () => Navigator.pop(context),
+                      ),
                     ),
-                    child: IconButton(
-                      icon: const Icon(Icons.arrow_back, color: Colors.black),
-                      onPressed: () => Navigator.pop(context),
-                    ),
+                  ]),
+                  SizedBox(height: 16),
+                  Expanded(
+                    child: controller.addressList.length!=0?ListView.builder(
+                        itemCount: controller.addressList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return AddressCard(type: controller.addressList[index].city.toString(),
+                            address: "${controller.addressList[index].street.toString()} "
+                                "${controller.addressList[index].houseNo.toString()} ${controller.addressList[index].postcode.toString()}",
+                            icon: Icons.book, iconColor: Colors.black38,
+
+                          );
+                        }):Center(
+                      child: Text("No Data found",
+                        style: TextStyle(color: Colors.black,fontSize: 16,fontWeight: FontWeight.w600),),),
                   ),
-                  const SizedBox(width: 16),
-                  const Text(
-                    'My Address',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
+
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Get.to(AddLocationScreen());
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: primaryColor,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: const Text(
+                        'ADD NEW ADDRESS',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
-
-              // Address cards
-              AddressCard(
-                type: 'HOME',
-                address: '2464 Royal Ln. Mesa, New Jersey 45463',
-                icon: Icons.home_outlined,
-                iconColor: Colors.blue,
-              ),
-              const SizedBox(height: 16),
-              AddressCard(
-                type: 'WORK',
-                address: '3891 Ranchview Dr. Richardson, California 62639',
-                icon: Icons.work_outline,
-                iconColor: Colors.purple,
-              ),
-
-              const Spacer(),
-              // Add new address button
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Get.to(AddLocationScreen());
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryColor,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: const Text(
-                    'ADD NEW ADDRESS',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
+        ):Center(
+          child: CircularProgressIndicator(
+            color: Colors.red,strokeWidth: 3.0,
+          ),
+        );
+      },
     );
   }
 }

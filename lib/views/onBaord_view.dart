@@ -70,7 +70,7 @@ class OnbaordView extends StatelessWidget {
                 const SizedBox(height: 20,),
                 InkWell(
                   onTap: (){
-                    Get.to(BottombarView());
+                    controller.generateUid(context);
                   },
                   child: CustomText(
                     customColor: Colors.black54,

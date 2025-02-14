@@ -20,10 +20,6 @@
         "source": "com.example.oceanakabab.app-main-40:/drawable-xxhdpi/ic_launcher_foreground.png"
     },
     {
-        "merged": "com.example.oceanakabab.app-merged_res-45:/drawable_launch_background.xml.flat",
-        "source": "com.example.oceanakabab.app-main-40:/drawable/launch_background.xml"
-    },
-    {
         "merged": "com.example.oceanakabab.app-merged_res-45:/drawable-xxxhdpi_ic_launcher_foreground.png.flat",
         "source": "com.example.oceanakabab.app-main-40:/drawable-xxxhdpi/ic_launcher_foreground.png"
     },
@@ -36,12 +32,12 @@
         "source": "com.example.oceanakabab.app-main-40:/drawable-v21/launch_background.xml"
     },
     {
-        "merged": "com.example.oceanakabab.app-merged_res-45:/mipmap-xxxhdpi_launcher_icon.png.flat",
-        "source": "com.example.oceanakabab.app-main-40:/mipmap-xxxhdpi/launcher_icon.png"
-    },
-    {
         "merged": "com.example.oceanakabab.app-merged_res-45:/mipmap-xhdpi_launcher_icon.png.flat",
         "source": "com.example.oceanakabab.app-main-40:/mipmap-xhdpi/launcher_icon.png"
+    },
+    {
+        "merged": "com.example.oceanakabab.app-merged_res-45:/mipmap-xxxhdpi_launcher_icon.png.flat",
+        "source": "com.example.oceanakabab.app-main-40:/mipmap-xxxhdpi/launcher_icon.png"
     },
     {
         "merged": "com.example.oceanakabab.app-merged_res-45:/drawable-hdpi_ic_launcher_foreground.png.flat",

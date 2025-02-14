@@ -15,26 +15,35 @@ class customInputField extends StatelessWidget{
    customInputField({super.key, this.controller, required this.textValue, required this.keyboardType, this.textInputAction});
   @override
   Widget build(BuildContext context) {
-    return  TextField(
-      enabled: true,
-      cursorColor: kcVeryLightGrey,
-      cursorHeight: 23,
-      style: GoogleFonts.inter(
-          fontSize: 12,
-          fontWeight: FontWeight.w400
+    return  Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+      width: MediaQuery.sizeOf(context).width,
+      height: 50,
+      decoration:  BoxDecoration(
+          color: Colors.grey.shade100,
+          borderRadius: BorderRadius.all(Radius.circular(10))),
+      child: TextField(
+        enabled: true,
+        cursorColor: kcVeryLightGrey,
+        cursorHeight: 23,
+        style: GoogleFonts.inter(
+            fontSize: 12,
+            fontWeight: FontWeight.w400
+        ),
+        textInputAction: textInputAction,
+        keyboardType: keyboardType,
+        controller: controller,
+        textAlign: TextAlign.start,
+         decoration: InputDecoration(
+           hintText: textValue,
+           border: InputBorder.none,
+             hintStyle: GoogleFonts.ubuntu(
+               fontSize: 12,
+                   fontWeight: FontWeight.w600
+             ),
+         ),
       ),
-      textInputAction: textInputAction,
-      keyboardType: keyboardType,
-      controller: controller,
-      textAlign: TextAlign.start,
-       decoration: InputDecoration(
-         hintText: textValue,
-         border: InputBorder.none,
-           hintStyle: GoogleFonts.ubuntu(
-             fontSize: 12,
-                 fontWeight: FontWeight.w600
-           ),
-       ),
     );
   }
 
@@ -52,34 +61,43 @@ class InputFieldWithIcon extends StatelessWidget{
   final TextEditingController? controller;
   final String textValue;
   
-  final IconData prefixIcon;
 
   final TextInputAction? textInputAction;
   final TextInputType keyboardType;
-  const InputFieldWithIcon({super.key, this.controller, required this.textValue, required this.keyboardType, this.textInputAction, required this.prefixIcon});
+  const InputFieldWithIcon({super.key, this.controller, required this.textValue, required this.keyboardType, this.textInputAction});
 
   @override
   Widget build(BuildContext context) {
-    return  TextField(
-      enabled: true,
-      cursorColor: kcVeryLightGrey,
-      cursorHeight: 23,
-      style: GoogleFonts.inter(
-          fontSize: 12,
-          fontWeight: FontWeight.w400
-      ),
-      textInputAction: textInputAction,
-      keyboardType: keyboardType,
-      controller: controller,
-      textAlign: TextAlign.start,
-      decoration: InputDecoration(
-        hintText: textValue,
-        border: InputBorder.none,
-        hintStyle: GoogleFonts.ubuntu(
+    return  Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+      width: MediaQuery.sizeOf(context).width,
+      height: 85,
+      decoration:  BoxDecoration(
+          color: Colors.grey.shade100,
+          borderRadius: BorderRadius.all(Radius.circular(10))),
+      child: TextField(
+        minLines: 5,
+        maxLines: 10,
+        enabled: true,
+        cursorColor: kcVeryLightGrey,
+        cursorHeight: 23,
+        style: GoogleFonts.inter(
             fontSize: 12,
-            fontWeight: FontWeight.w600
+            fontWeight: FontWeight.w400
         ),
-        prefixIcon: Icon(prefixIcon,color: primaryColor,),
+        textInputAction: textInputAction,
+        keyboardType: keyboardType,
+        controller: controller,
+        textAlign: TextAlign.start,
+        decoration: InputDecoration(
+          hintText: textValue,
+          border: InputBorder.none,
+          hintStyle: GoogleFonts.ubuntu(
+              fontSize: 12,
+              fontWeight: FontWeight.w600
+          ),
+        ),
       ),
     );
   }

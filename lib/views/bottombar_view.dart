@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:oceanakabab/common/app_colors.dart';
+import 'package:oceanakabab/common/app_manager.dart';
 import 'package:oceanakabab/views/home_view.dart';
 import 'package:oceanakabab/views/profile_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:titled_navigation_bar/titled_navigation_bar.dart';
 import 'package:intl/intl.dart';
 
@@ -17,8 +19,29 @@ class BottombarView extends StatefulWidget {
 
 class _BottombarViewState extends State<BottombarView> {
 
+  String? guestsUid;
 
+  Future<void> loadGuestUid() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      guestsUid = prefs.getString('guestUid');
+      AppManager.guestUid = guestsUid??"";
+    });
 
+    if (guestsUid != null) {
+      print("Retrieved UID from SharedPreferences: $guestsUid");
+      // Use the UID as needed
+    } else {
+      print("No UID found in SharedPreferences");
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    loadGuestUid();
+    super.initState();
+  }
 
   int myIndex = 0;
   final pageController = PageController();

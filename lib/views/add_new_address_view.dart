@@ -1,200 +1,284 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:oceanakabab/common/app_colors.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:oceanakabab/custom_widget/custom_inputField.dart';
+
+import '../controllers/address-controller.dart';
+import '../custom_widget/text_widget.dart';
 
 class AddLocationScreen extends StatelessWidget {
-  const AddLocationScreen({Key? key}) : super(key: key);
+  AddLocationScreen({Key? key}) : super(key: key);
+
+  final controller = Get.put(AddressController());
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          // Map Section
-          SizedBox(
-            height: 300,
-            child: Stack(
+    return GetBuilder<AddressController>(
+      builder: (controller) {
+        return Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            backgroundColor: Colors.white,
+            title: Row(
               children: [
-                GoogleMap(
-                  initialCameraPosition: CameraPosition(
-                    target: LatLng(37.42796133580664, -122.085749655962),
-                    zoom: 14.4746,
-                  ),
-                  markers: {
-                    Marker(
-                      markerId: MarkerId('current_location'),
-                      position: LatLng(37.42796133580664, -122.085749655962),
-                    ),
+                IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Colors.black),
+                  onPressed: () {
+                    Get.back();
                   },
                 ),
-                Positioned(
-                  top: 40,
-                  left: 16,
-                  child: CircleAvatar(
-                    backgroundColor: Colors.black,
-                    child: IconButton(
-                      icon: Icon(Icons.arrow_back, color: Colors.white),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.black87,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      'Move to edit location',
-                      style: TextStyle(color: Colors.white),
-                    ),
+                const Text(
+                  'Add New Address',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ],
             ),
           ),
+          body: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Address Type Dropdown
+                      _buildAddressTypeDropdown(context),
+                      if (controller.Addresstype == "Home") ...[
+                        SectionTitle(title: 'HOUSE'),
+                        customInputField(
+                          textValue: 'Enter House No',
+                          keyboardType: TextInputType.text,
+                          controller: controller.houseNo,
 
-          // Form Section
-          Expanded(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildSectionTitle('ADDRESS'),
-                  _buildAddressField('3235 Royal Ln, Mesa, New Jersy 34567'),
-                  SizedBox(height: 24),
+                        ),
+                      ],
 
-                  _buildSectionTitle('STREET'),
-                  _buildTextField('Hason Nagar'),
-                  SizedBox(height: 16),
+                      // Conditional Fields Based on Address Type
+                      if (controller.Addresstype == "Hotel") ...[
+                        SectionTitle(title: 'HOUSE'),
+                        customInputField(
+                          textValue: 'Enter house no',
+                          keyboardType: TextInputType.text,
+                          controller: controller.houseNo,
 
-                  _buildSectionTitle('POST CODE'),
-                  _buildTextField('34567'),
-                  SizedBox(height: 16),
+                        ),
+                        SectionTitle(title: 'HOTEL'),
+                        customInputField(
+                          textValue: 'Enter Hotel Name',
+                          keyboardType: TextInputType.text,
+                          controller: controller.hotel,
+                        ),
+                        SectionTitle(title: 'FLOOR'),
+                        customInputField(
+                          textValue: 'Enter floor no',
+                          keyboardType: TextInputType.text,
+                          controller: controller.floorNo,
+                        ),
+                      ],
+                      if (controller.Addresstype == "Office") ...[
+                        SectionTitle(title: 'HOME'),
+                        customInputField(
+                          textValue: 'Enter house no',
+                          keyboardType: TextInputType.text,
+                          controller: controller.houseNo,
+                        ),
+                        SectionTitle(title: 'OFFICE'),
+                        customInputField(
+                          textValue: 'Enter floor no',
+                          keyboardType: TextInputType.text,
+                          controller: controller.floorNo,
+                        ),
+                        SectionTitle(title: 'BUSINESS NAME'),
+                        customInputField(
+                          textValue: 'Enter Business Name',
+                          keyboardType: TextInputType.text,
+                          controller: controller.business,
+                        ),
+                      ],
+                      if (controller.Addresstype == "Apartment") ...[
+                        SectionTitle(title: 'HOME'),
+                        customInputField(
+                          textValue: 'Enter house no',
+                          keyboardType: TextInputType.text,
+                          controller: controller.houseNo,
+                        ),
+                        SectionTitle(title: 'APARTMENT'),
+                        customInputField(
+                          textValue: 'Enter Apartment Name',
+                          keyboardType: TextInputType.text,
+                          controller: controller.apartment,
+                        ),
+                        SectionTitle(title: 'FLOOR'),
+                        customInputField(
+                          textValue: 'Enter floor Name',
+                          keyboardType: TextInputType.text,
+                          controller: controller.floorNo,
+                        ),
+                        SectionTitle(title: 'BUILDING NAME'),
+                        customInputField(
+                          textValue: 'Enter building Name',
+                          keyboardType: TextInputType.text,
+                          controller: controller.buildingName,
+                        ),
+                        SectionTitle(title: 'ENTRY CODE'),
+                        customInputField(
+                          textValue: 'Enter Entry Code',
+                          keyboardType: TextInputType.text,
+                          controller: controller.entrycode,
+                        ),
+                      ],
+                      if (controller.Addresstype == "Others") ...[
+                        SectionTitle(title: 'HOUSE'),
+                        customInputField(
+                          textValue: 'Enter House No',
+                          keyboardType: TextInputType.text,
+                          controller: controller.houseNo,
+                        ),
+                        SectionTitle(title: 'BUSINESS NAME'),
+                        customInputField(
+                          textValue: 'Enter Business name',
+                          keyboardType: TextInputType.text,
+                          controller: controller.business,
+                        ),
+                        SectionTitle(title: 'FLOOR'),
+                        customInputField(
+                          textValue: 'Enter floor No',
+                          keyboardType: TextInputType.text,
+                          controller: controller.floorNo,
+                        ),
+                      ],
 
-                  _buildSectionTitle('APPARTMENT'),
-                  _buildTextField('345'),
-                  SizedBox(height: 24),
+                      // Common Fields for All Address Types
+                      SectionTitle(title: 'STREET'),
+                      customInputField(
+                        textValue: 'Enter Street',
+                        keyboardType: TextInputType.text,
+                        controller: controller.street,
+                      ),
+                      const SizedBox(height: 5),
 
-                  _buildSectionTitle('LABEL AS'),
-                  _buildLabelOptions(),
-                  SizedBox(height: 24),
+                      SectionTitle(title: 'POST CODE'),
+                      customInputField(
+                        textValue: 'Enter PostCode',
+                        keyboardType: TextInputType.text,
+                        controller: controller.postcode,
+                      ),
+                      const SizedBox(height: 5),
 
-                  _buildSaveButton(),
-                ],
+                      SectionTitle(title: 'CITY'),
+                      customInputField(
+                        textValue: 'Enter City',
+                        keyboardType: TextInputType.text,
+                        controller: controller.city,
+                      ),
+                      const SizedBox(height: 5),
+
+                      SectionTitle(title: 'INSTRUCTION FOR DELIVERY BOY'),
+                      InputFieldWithIcon(
+                        textValue: 'Enter Instructions',
+                        keyboardType: TextInputType.text,
+                        controller: controller.instruction,
+                      ),
+                      const SizedBox(height: 24),
+
+                      // Save Button
+                      _buildSaveButton(context),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildAddressTypeDropdown(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+      width: MediaQuery.sizeOf(context).width,
+      height: 50,
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100,
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton2<String>(
+          isExpanded: true,
+          hint: Text(
+            controller.Addresstype == "" ? 'Select Address Type' : controller.Addresstype.toString(),
+            style: TextStyle(
+              fontSize: 14,
+              color: Theme.of(context).hintColor,
+            ),
+          ),
+          items: controller.data
+              .map((String item) => DropdownMenuItem<String>(
+            value: item,
+            child: Text(
+              item,
+              style: const TextStyle(
+                fontSize: 14,
               ),
             ),
+          ))
+              .toList(),
+          onChanged: (String? value) {
+            controller.getAddress(value ?? "");
+          },
+          buttonStyleData: const ButtonStyleData(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            height: 40,
+            width: 140,
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSectionTitle(String title) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 8),
-      child: Text(
-        title,
-        style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          color: Colors.black54,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAddressField(String address) {
-    return Container(
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        children: [
-          Icon(Icons.location_on, color: Colors.grey),
-          SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              address,
-              style: TextStyle(fontSize: 14),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTextField(String initialValue) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: TextField(
-        controller: TextEditingController(text: initialValue),
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(vertical: 16),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLabelOptions() {
-    return Row(
-      children: [
-        _buildLabelOption('Home', true),
-        SizedBox(width: 12),
-        _buildLabelOption('Work', false),
-        SizedBox(width: 12),
-        _buildLabelOption('Other', false),
-      ],
-    );
-  }
-
-  Widget _buildLabelOption(String label, bool isSelected) {
-    return InkWell(
-      onTap: () {},
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        decoration: BoxDecoration(
-          color: isSelected ? primaryColor : Colors.grey[100],
-          borderRadius: BorderRadius.circular(24),
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: isSelected ? Colors.white : Colors.black,
-            fontWeight: FontWeight.w500,
+          menuItemStyleData: const MenuItemStyleData(
+            height: 40,
           ),
         ),
       ),
     );
   }
 
-  Widget _buildSaveButton() {
+  // Address Type Dropdown Widget
+  Widget _buildSaveButton(BuildContext context) {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          controller.saveAddress(context);
+        },
         style: ElevatedButton.styleFrom(
           backgroundColor: primaryColor,
-          padding: EdgeInsets.symmetric(vertical: 16),
+          padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
         ),
-        child: Text(
-          'SAVE LOCATION',
+        child: controller.check==false? Text(
+          'SAVE ADDRESS',
           style: TextStyle(
             fontSize: 16,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
+        ):Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+         CircularProgressIndicator(
+            color: Colors.white,
+          strokeWidth: 2.0,
+        )
+          ],
         ),
       ),
     );

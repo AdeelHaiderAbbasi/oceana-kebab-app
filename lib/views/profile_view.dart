@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:oceanakabab/views/address_view.dart';
 
 import 'add_new_address_view.dart';
 
@@ -124,7 +125,7 @@ class ProfileScreen extends StatelessWidget {
   Widget _buildMenuItem(IconData icon, String title, {Color? color}) {
     return InkWell(
       onTap: () {
-        Get.to(AddLocationScreen());
+        Get.to(AddressScreen());
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
